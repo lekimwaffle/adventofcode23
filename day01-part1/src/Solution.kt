@@ -1,16 +1,15 @@
 import java.io.File
 
 fun main(){
-    Solution().Solve(File("day01-part1/src/input.txt").readLines())
+    Solution().solve(File("day01-part1/src/input.txt").readLines())
 }
 
 class Solution{
-    fun Solve(input: List<String>){
-        val digits = input.map { it.filter { it.isDigit() } }
-        var sum = 0
-        for(line in digits)
-            sum += Integer.parseInt("${line.first()}${line.last()}")
-
+    fun solve(input: List<String>){
+        val sum = input.sumOf {
+            val digits = it.filter { it.isDigit() }
+            Integer.parseInt("${digits.first()}${digits.last()}")
+        }
         println(sum)
     }
 }

@@ -11,7 +11,7 @@ class Solution{
         var x = 0
         for((y, line) in input.withIndex()){
             while(x < line.length){
-                if( line[x] == '.'){
+                if(line[x] == '.'){
                     x++
                 } else if (line[x].isDigit()){
                     val number = line.substring(x).takeWhile { it.isDigit() }
@@ -25,13 +25,12 @@ class Solution{
             x = 0
         }
 
-        var sum = 0
-        for(symbol in symbols.filter { it.value == '*' }){
+        val sum = symbols.filter { it.value == '*' }.sumOf { symbol ->
             val matches = numbers.filter { symbol.y >= it.y - 1 && symbol.y <= it.y + 1 && symbol.x >= it.x - 1 && symbol.x <= it.xEnd + 1 }
             if(matches.count() != 2)
-                continue
-
-            sum += matches.map { it.value }.reduce { acc, number -> acc * number }
+                0
+            else
+                matches.map { it.value }.reduce { acc, number -> acc * number }
         }
         println(sum)
     }

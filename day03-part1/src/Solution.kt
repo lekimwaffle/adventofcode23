@@ -25,13 +25,9 @@ class Solution{
             x = 0
         }
 
-        var sum = 0
-        for(symbol in symbols){
+        val sum = symbols.sumOf { symbol ->
             val matches = numbers.filter { symbol.y >= it.y - 1 && symbol.y <= it.y + 1 && symbol.x >= it.x - 1 && symbol.x <= it.xEnd + 1 }
-            for(match in matches){
-                numbers.remove(match)
-                sum += match.value
-            }
+            matches.sumOf { it.value }
         }
         println(sum)
     }

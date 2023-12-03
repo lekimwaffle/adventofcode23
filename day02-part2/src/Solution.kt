@@ -5,31 +5,32 @@ fun main(){
 }
 
 class Solution{
-    private val gameRegex = Regex("Game (\\d+)")
-    private val colourRegex = Regex("(\\d+ \\w+)")
-
     fun solve(input: List<String>){
-        val games = mutableListOf<Game>()
+        var sum = 0
         for(line in input){
-            val idMatch = gameRegex.find(line)
-            val id = Integer.parseInt(idMatch?.groups?.get(1)?.value)
-            val colours = colourRegex.findAll(line).map {
-                val split = it.groupValues[1].split(" ")
-                Colour(Integer.parseInt(split[0]), split[1])
-            }.toList()
+            var i = line.takeWhile { it != ':' }.count()
+            val colours = mutableListOf<Colour>()
+            while(line.length > i){
+                if(!line[i].isDigit() && !line[i].isLetter())
+                    i++
+                else{
+                    val number = line.substring(i).takeWhile { it.isDigit() }
+                    i += number.length + 1
+                    val colour = line.substring(i).takeWhile { it.isLetter() }
+                    i += colour.length
+                    colours.add(Colour(Integer.parseInt(number), colour))
+                }
+            }
 
-            games.add(Game(id, getHighestColour(colours, "red"), getHighestColour(colours, "green"), getHighestColour(colours, "blue")))
+            fun getHighestColour(colour: String): Int {
+                return colours.filter { it.colour == colour }.maxOf { it.amount }
+            }
+
+            sum += getHighestColour("red") * getHighestColour( "green") * getHighestColour("blue")
         }
-
-        val sum = games.sumOf { it.red * it.green * it.blue }
 
         println(sum)
     }
-
-    private fun getHighestColour(colours: List<Colour>?, colour: String): Int{
-        return colours?.filter { it.colour == colour } ?.maxBy { it.amount }?.amount ?: 0
-    }
 }
 
-data class Game(val id: Int, var red:Int, var green: Int, var blue: Int)
 data class Colour(val amount: Int, val colour: String)

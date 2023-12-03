@@ -16,7 +16,7 @@ class Tests{
 
     @Test
     fun day1part2(){
-        Solution().Solve(File("test/input.txt").readLines())
+        Solution().solve(File("test/input.txt").readLines())
         val output = outputStreamCaptor.toString()
         assert("281" == output.trim())
     }

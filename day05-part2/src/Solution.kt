@@ -9,51 +9,35 @@ class Solution{
         val seedRanges = input[0].substringAfter(": ")
             .split(' ')
             .map { it.toLong() }
-            .chunked(2)
-            .map { SeedRange(it[0], it[1] - 1) }
+            .chunked(2){ SeedRange(it[0], it[1] - 1) }
 
-        val sections = input
-            .flatMapIndexed { index, x ->
-                when {
-                    index == 0 || index == input.lastIndex -> listOf(index)
-                    x.isEmpty() -> listOf(index - 1, index + 1)
-                    else -> emptyList()
-                }
+        val maps = input.subList(2, input.size)
+            .fold(mutableListOf(ArrayList<String>())) { list, item -> list.apply {
+                if (item.isEmpty()) add(ArrayList())
+                else last().add(item) }
             }
-            .chunked(2) { (from, to) -> input.slice(from..to) }
-            .drop(1)
-            .map { lines ->
-                val titleSplit = lines[0].split('-', ' ')
-                val ranges = lines.drop(1).map { line ->
-                    val split = line.split(' ').map { it.toLong() }
+            .map {
+                it.subList(1, it.size).map { line ->
+                    val split = line.split(' ').map { s -> s.toLong() }
                     SectionRange(split[0], split[1], split[2])
                 }
-
-                Section(titleSplit[0], titleSplit[2], ranges)
             }
 
-        var eligibleSeedsRanges = seedRanges
-        for(section in sections)
-            eligibleSeedsRanges = eligibleSeedsRanges.map { transformRange(it, section) }.flatten()
-
-        val result = eligibleSeedsRanges.minOf { it.start }
+        val result = maps.fold(seedRanges) { acc, section -> acc.map { transformRange(it, section) }.flatten() }.minOf { it.start }
         println(result)
     }
 
-    private fun transformRange(seedRange: SeedRange, section: Section): List<SeedRange> {
-        val matches = section.ranges.filter { Math.max(seedRange.start, it.sourceStart) <= Math.min(seedRange.start + (seedRange.length - 1), it.sourceStart + (it.length - 1)) }
-        if(!matches.any())
-            return listOf(seedRange)
-
-        return matches.map { match ->
-            val offset = match.destinationStart - match.sourceStart
-            val left = Math.max(seedRange.start, match.sourceStart)
-            val right = Math.min(seedRange.start + seedRange.length - 1, match.sourceStart + match.length - 1)
-            SeedRange(left + offset, (right - left) + 1)
-        }
+    private fun transformRange(seedRange: SeedRange, section: List<SectionRange>): List<SeedRange> {
+        return section.map { SectionInterval(Math.max(seedRange.start, it.sourceStart), Math.min(seedRange.start + (seedRange.length - 1), it.sourceStart + (it.length - 1)), it) }
+            .filter { it.left <= it.right }
+            .map { match ->
+                val offset = match.section.destinationStart - match.section.sourceStart
+                SeedRange(match.left + offset, (match.right - match.left) + 1)
+            }
+            .ifEmpty { listOf(seedRange) }
     }
 }
 
 data class SeedRange(val start: Long, val length: Long)
-data class Section(val from: String, val to: String, val ranges: List<SectionRange>)
 data class SectionRange(val destinationStart: Long, val sourceStart: Long, val length: Long)
+data class SectionInterval(val left: Long, val right: Long, val section: SectionRange)

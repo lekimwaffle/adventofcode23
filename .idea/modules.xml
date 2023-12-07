@@ -12,6 +12,10 @@
       <module fileurl="file://$PROJECT_DIR$/day04-part2/day04-part2.iml" filepath="$PROJECT_DIR$/day04-part2/day04-part2.iml" />
       <module fileurl="file://$PROJECT_DIR$/day05-part1/day05-part1.iml" filepath="$PROJECT_DIR$/day05-part1/day05-part1.iml" />
       <module fileurl="file://$PROJECT_DIR$/day05-part2/day05-part2.iml" filepath="$PROJECT_DIR$/day05-part2/day05-part2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day06-part1/day06-part1.iml" filepath="$PROJECT_DIR$/day06-part1/day06-part1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day06-part2/day06-part2.iml" filepath="$PROJECT_DIR$/day06-part2/day06-part2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day07-part1/day07-part1.iml" filepath="$PROJECT_DIR$/day07-part1/day07-part1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day07-part2/day07-part2.iml" filepath="$PROJECT_DIR$/day07-part2/day07-part2.iml" />
     </modules>
   </component>
 </project>

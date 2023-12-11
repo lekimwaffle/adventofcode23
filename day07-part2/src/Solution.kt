@@ -12,9 +12,8 @@ class Solution{
             Hand(split[0], Integer.parseInt(split[1]), getHandType(split[0]))
         }
 
-        val ordered = hands.sortedWith(compareByDescending<Hand>{
-            it.type
-        }.thenByDescending { strength[it.cards[0]] }
+        val ordered = hands.sortedWith(compareByDescending<Hand>{ it.type }
+            .thenByDescending { strength[it.cards[0]] }
             .thenByDescending { strength[it.cards[1]] }
             .thenByDescending { strength[it.cards[2]] }
             .thenByDescending { strength[it.cards[3]] }

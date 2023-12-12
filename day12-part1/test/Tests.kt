@@ -15,10 +15,17 @@ class Tests{
     }
 
     @Test
-    fun day11part2(){
+    fun day12part1(){
         Solution().solve(File("test/input.txt").readLines())
         val output = outputStreamCaptor.toString()
-        assert("1030" == output.trim())
+        assert("21" == output.trim())
+    }
+
+    @Test
+    fun day12part1custom(){
+        Solution().solve(File("test/custom-input.txt").readLines())
+        val output = outputStreamCaptor.toString()
+        assert("27" == output.trim())
     }
 
     @AfterEach
